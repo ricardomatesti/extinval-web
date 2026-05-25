@@ -5,6 +5,7 @@ import Link from 'next/link'
 import EditableField from '@/components/EditableField'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang, useTranslation } from '@/contexts/LangContext'
+import { CONTACT_COUNTRY_ORDER, CONTACT_LOCATIONS, getContactCountryLabel } from '@/lib/contactLocations'
 
 const PAGE = 'home'
 
@@ -12,6 +13,7 @@ export default function HomePage() {
   const t = useTranslation()
   const { lang } = useLang()
   const [slide, setSlide] = useState(0)
+  const [selectedCountryId, setSelectedCountryId] = useState('spain')
   const TOTAL = 4
 
   useEffect(() => {
@@ -109,6 +111,14 @@ export default function HomePage() {
     { cat:t('pt7.cat'), name:t('pt7.name'), desc:t('pt7.desc'), icon:'🔧', image:'/images/7. Stock estrategico.jpg'                                        },
   ]
 
+  const homeCountries = CONTACT_COUNTRY_ORDER.map(countryId => ({
+    id: countryId,
+    label: getContactCountryLabel(countryId, lang),
+    locations: CONTACT_LOCATIONS.filter(location => location.countryId === countryId),
+  }))
+
+  const selectedCountry = homeCountries.find(country => country.id === selectedCountryId) ?? homeCountries[0]
+
   return (
     <>
       <CMSLoader pageKey={PAGE} />
@@ -118,10 +128,17 @@ export default function HomePage() {
           display: grid;
           grid-template-columns: 4fr 1.5fr;
           gap: 2rem;
-          align-items: start;
+          height: clamp(480px, 38vw, 640px);
+          align-items: stretch;
+        }
+        .eje-split-custom > * {
+          min-height: 0;
         }
         @media (max-width: 1024px) {
-          .eje-split-custom { grid-template-columns: 1fr; }
+          .eje-split-custom {
+            grid-template-columns: 1fr;
+            height: auto;
+          }
         }
         .about-split-custom {
           display: grid;
@@ -189,14 +206,6 @@ export default function HomePage() {
         .srv-card:hover .sc-icon-circle {
           background: rgba(255,255,255,.08);
           border-color: rgba(255,255,255,.2);
-        }
-
-        /* Mapa Eje de Seguridad — responsive sin recorte */
-        .eje-map-img {
-          width: 100%;
-          height: auto;
-          display: block;
-          object-fit: contain;
         }
       `}</style>
 
@@ -334,39 +343,70 @@ export default function HomePage() {
           </div>
           <div className="eje-split-custom">
             <div className="reveal">
-              {/* 1.2 — Mapa según idioma, sin recorte */}
-              <img
-                key={lang}
-                src={'/images/mapa_azul.jpg'}
-                alt={lang === 'en' ? 'Extinval Global Network — Security Axis' : 'Red Global Extinval — Eje de Seguridad'}
-                className="eje-map-img"
-              />
+              <div className="home-network-map-shell">
+                <img
+                  key={lang}
+                  src={'/images/mapa_azul.jpg'}
+                  alt={lang === 'en' ? 'Extinval Global Network — Security Axis' : 'Red Global Extinval — Eje de Seguridad'}
+                  className="home-network-map-img"
+                />
+              </div>
             </div>
             <div className="reveal d2">
-              <div className="eje-map" style={{ padding: '1.75rem' }}>
+              <div className="eje-map home-network-panel">
                 <div className="eje-map-dots" />
-                <div style={{ fontFamily: 'var(--cond)', fontSize: '.6rem', fontWeight: 700, letterSpacing: '.2em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '1rem', position: 'relative', zIndex: 2 }}>
-                  {t('eje.mapLabel')}
-                </div>
-                <div className="eje-pins">
-                  {[
-                    { city: 'Valencia, España',          region: t('rg.pin.hq'),  hq: true  },
-                    { city: 'Algeciras / Barcelona',      region: t('rg.pin.med')            },
-                    { city: 'Las Palmas de G.C.',         region: t('rg.pin.atl')            },
-                    { city: 'Canal de Panamá',            region: t('rg.pin.pan')            },
-                    { city: 'Houston · Canadá',           region: t('rg.pin.usa')            },
-                  ].map(p => (
-                    <div key={p.city} className="eje-pin">
-                      <span className={`pin-dot${p.hq ? ' hq' : ''}`} />
-                      <div>
-                        <div className="pin-city">{p.city}</div>
-                        <div className="pin-region">{p.region}</div>
-                      </div>
-                    </div>
-                  ))}
+                <div className="home-network-panel-inner">
+                  <div style={{ fontFamily: 'var(--cond)', fontSize: '.6rem', fontWeight: 700, letterSpacing: '.2em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '1rem', position: 'relative', zIndex: 2 }}>
+                    {t('eje.mapLabel')}
+                  </div>
+                  <div className="home-network-country-tabs" role="tablist" aria-label={t('eje.mapLabel')}>
+                    {homeCountries.map(country => (
+                      <button
+                        key={country.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={selectedCountry.id === country.id}
+                        className={`home-network-country-tab${selectedCountry.id === country.id ? ' active' : ''}`}
+                        onClick={() => setSelectedCountryId(country.id)}
+                      >
+                        {country.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="home-network-offices" role="tabpanel" aria-label={selectedCountry.label}>
+                    {selectedCountry.locations.map(location => (
+                      <article key={location.id} className="home-network-office-card">
+                        <div className="home-network-office-top">
+                          <div>
+                            <div className="home-network-office-city">{location.city[lang]}</div>
+                            <div className="home-network-office-locality">
+                              {location.locality[lang] || selectedCountry.label}
+                            </div>
+                          </div>
+                          {location.note ? (
+                            <span className="home-network-office-badge">{t('ct.offices.note')}</span>
+                          ) : null}
+                        </div>
+                        <div className="home-network-office-address">
+                          {location.address || location.locality[lang] || selectedCountry.label}
+                        </div>
+                        {location.email ? (
+                          <a href={`mailto:${location.email}`} className="home-network-office-link">
+                            <span className="home-network-office-icon">✉</span>
+                            <span>{location.email}</span>
+                          </a>
+                        ) : null}
+                        {location.phones.map(phone => (
+                          <div key={phone} className="home-network-office-link">
+                            <span className="home-network-office-icon">📞</span>
+                            <span>{phone}</span>
+                          </div>
+                        ))}
+                      </article>
+                    ))}
+                  </div>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>

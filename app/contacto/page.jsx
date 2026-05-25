@@ -4,85 +4,19 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
 import CMSLoader from '@/components/CMSLoader'
-import { useTranslation } from '@/contexts/LangContext'
+import { useLang, useTranslation } from '@/contexts/LangContext'
+import { CONTACT_LOCATIONS } from '@/lib/contactLocations'
 
 const PAGE = 'contacto'
 
-const CONTACTS = [
-  {
-    id: 'hq',
-    name: 'EXTINVAL HQ: Valencia',
-    address: 'Carrer Serra d\'Espadà, 28, P. Ind. La LLoma\nAldaia, Valencia 46960, ES',
-    phones: ['+34 96 367 40 53'],
-    email: 'service@extinval.com',
-    note: true,
-    lat: 39.4607, lng: -0.4645,
-  },
-  {
-    id: 'canarias',
-    name: 'EXTINVAL Canarias',
-    address: 'Calle de la Hoya del Rosario, 155, A\nLas Palmas de Gran Canaria, 35016, ES',
-    phones: ['+34 656 908 793'],
-    email: 'info@extinval-canaryislands.com',
-    lat: 28.1248, lng: -15.4300,
-  },
-  {
-    id: 'almeria',
-    name: 'EXTINVAL Almería',
-    address: 'C. Carbón, 2, 04009 Almería, ES',
-    phones: ['+34 629 156 781'],
-    email: 'extinval-almeria@extinval.com',
-    lat: 36.8381, lng: -2.4597,
-  },
-  {
-    id: 'panama',
-    name: 'EXTINVAL Panama',
-    address: null,
-    phones: ['507 600 709 31'],
-    email: null,
-    lat: 8.9936, lng: -79.5197,
-  },
-  {
-    id: 'canada',
-    name: 'EXTINVAL Canada',
-    address: null,
-    phones: ['507 600 709 31'],
-    email: 'info@extinval-canada.com',
-    lat: 43.6532, lng: -79.3832,
-  },
-  {
-    id: 'usa-ca',
-    name: 'EXTINVAL USA — California',
-    address: '1721 Pearl St, Alameda\nCalifornia 94501, US',
-    phones: ['+1 281 851 2886', '+1 305 804 2565'],
-    email: 'r.pavia@extinvalusa.com',
-    lat: 37.7799, lng: -122.2712,
-  },
-  {
-    id: 'usa-la',
-    name: 'EXTINVAL USA — Louisiana',
-    address: '161 James Dr W, Saint Rose\nLouisiana 70087, US',
-    phones: ['+1 281 851 2886', '+1 305 804 2565'],
-    email: 'r.pavia@extinvalusa.com',
-    lat: 29.9363, lng: -90.3154,
-  },
-  {
-    id: 'usa-nj',
-    name: 'EXTINVAL USA — New Jersey',
-    address: '212 Davis Ave 1, Harrison\nNew Jersey 07029, US',
-    phones: ['+1 281 851 2886', '+1 305 804 2565'],
-    email: 'r.pavia@extinvalusa.com',
-    lat: 40.7459, lng: -74.1551,
-  },
-]
-
 export default function ContactoPage() {
   const t = useTranslation()
+  const { lang } = useLang()
   const [status, setStatus] = useState('idle')
   const [countries, setCountries] = useState([])
-  const [selectedId, setSelectedId] = useState('hq')
+  const [selectedId, setSelectedId] = useState(CONTACT_LOCATIONS[0].id)
 
-  const selected = CONTACTS.find(c => c.id === selectedId)
+  const selected = CONTACT_LOCATIONS.find(c => c.id === selectedId) ?? CONTACT_LOCATIONS[0]
   const mapSrc = `https://maps.google.com/maps?q=${selected.lat},${selected.lng}&z=5&output=embed`
 
   useEffect(() => {
@@ -217,7 +151,7 @@ export default function ContactoPage() {
             <div>
               <div className="overline red" style={{ marginBottom: '1.5rem' }}>{t('ct.offices.title')}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '.75rem', overflowY: 'auto', maxHeight: 560 }}>
-                {CONTACTS.map(c => (
+                {CONTACT_LOCATIONS.map(c => (
                   <div
                     key={c.id}
                     onClick={() => setSelectedId(c.id)}
@@ -232,7 +166,7 @@ export default function ContactoPage() {
                         {t('ct.offices.note')}
                       </span>
                     )}
-                    <div style={{ fontFamily: 'var(--cond)', fontWeight: 800, fontSize: '.75rem', letterSpacing: '.1em', color: selectedId === c.id ? 'var(--red)' : 'var(--navy)', textTransform: 'uppercase', marginBottom: '.65rem', transition: 'color .2s' }}>{c.name}</div>
+                    <div style={{ fontFamily: 'var(--cond)', fontWeight: 800, fontSize: '.75rem', letterSpacing: '.1em', color: selectedId === c.id ? 'var(--red)' : 'var(--navy)', textTransform: 'uppercase', marginBottom: '.65rem', transition: 'color .2s' }}>{c.name[lang]}</div>
                     {c.address && (
                       <div style={{ fontSize: '.82rem', color: 'var(--muted)', marginBottom: '.45rem', whiteSpace: 'pre-line', lineHeight: 1.6 }}>{c.address}</div>
                     )}

@@ -1,6 +1,19 @@
 {
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/route": "app/api/auth/route.js",
+  "/api/cms/route": "app/api/cms/route.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/area-clientes/page": "app/area-clientes/page.js",
   "/autoridad/page": "app/autoridad/page.js",
   "/contacto/page": "app/contacto/page.js",
-  "/api/auth/route": "app/api/auth/route.js",
-  "/api/cms/route": "app/api/cms/route.js"
+  "/faq/page": "app/faq/page.js",
+  "/nosotros/page": "app/nosotros/page.js",
+  "/page": "app/page.js",
+  "/resources/[slug]/page": "app/resources/[slug]/page.js",
+  "/resources/page": "app/resources/page.js",
+  "/servicios/buques-mercantes/page": "app/servicios/buques-mercantes/page.js",
+  "/servicios/industrial-comercial/page": "app/servicios/industrial-comercial/page.js",
+  "/servicios/nautica-recreo/page": "app/servicios/nautica-recreo/page.js",
+  "/servicios/oil-gas/page": "app/servicios/oil-gas/page.js"
 }
