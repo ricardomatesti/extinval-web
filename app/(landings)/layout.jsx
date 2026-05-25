@@ -1,6 +1,7 @@
 import Script from 'next/script'
+import './landing.css'
 
-export default function LandingLayout({ children }) {
+export default function LandingsLayout({ children }) {
   return (
     <>
       <Script

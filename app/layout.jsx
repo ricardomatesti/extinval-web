@@ -1,8 +1,7 @@
 // Copyright © 2026 Pelayo Garrido Martinez — devpelayogarrido@gmail.com
-import './globals.css'
+import './base.css'
 import { LangProvider } from '@/contexts/LangContext'
 import LangHtmlSync from '@/components/LangHtmlSync'
-import AppShell from '@/components/AppShell'
 
 export const metadata = {
   title: { default: 'Extinval Group — Seguridad Marítima e Industrial', template: '%s — Extinval Group' },
@@ -17,7 +16,7 @@ export default function RootLayout({ children }) {
       <body>
         <LangProvider>
           <LangHtmlSync />
-          <AppShell>{children}</AppShell>
+          {children}
         </LangProvider>
       </body>
     </html>
