@@ -1,6 +1,6 @@
 // Copyright © 2026 Pelayo Garrido Martinez — devpelayogarrido@gmail.com
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
 import CMSLoader from '@/components/CMSLoader'
@@ -14,6 +14,8 @@ export default function HomePage() {
   const { lang } = useLang()
   const [slide, setSlide] = useState(0)
   const [selectedCountryId, setSelectedCountryId] = useState('spain')
+  const [networkPanelHeight, setNetworkPanelHeight] = useState(null)
+  const networkMapRef = useRef(null)
   const TOTAL = 4
 
   useEffect(() => {
@@ -51,6 +53,27 @@ export default function HomePage() {
     )
     document.querySelectorAll('.reveal').forEach(el => ro.observe(el))
     return () => ro.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const el = networkMapRef.current
+    if (!el) return
+
+    const updateHeight = () => {
+      const isDesktop = window.innerWidth > 1024
+      setNetworkPanelHeight(isDesktop ? el.getBoundingClientRect().height : null)
+    }
+
+    updateHeight()
+
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(el)
+    window.addEventListener('resize', updateHeight)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateHeight)
+    }
   }, [])
 
   // ── 4 SLIDES — uno por división ──────────────────────────────────────────
@@ -126,9 +149,8 @@ export default function HomePage() {
       <style>{`
         .eje-split-custom {
           display: grid;
-          grid-template-columns: 4fr 1.5fr;
-          gap: 2rem;
-          height: clamp(480px, 38vw, 640px);
+          grid-template-columns: minmax(0, 6fr) minmax(400px, 1.2fr);
+          gap: 1rem;
           align-items: stretch;
         }
         .eje-split-custom > * {
@@ -137,7 +159,6 @@ export default function HomePage() {
         @media (max-width: 1024px) {
           .eje-split-custom {
             grid-template-columns: 1fr;
-            height: auto;
           }
         }
         .about-split-custom {
@@ -331,7 +352,7 @@ export default function HomePage() {
 
       {/* ═══ EJE DE SEGURIDAD — 1.2 mapa con versión ES/EN ═══ */}
       <section className="section section-gray" id="red-global">
-        <div className="container">
+        <div className="container-wide">
           <div style={{ textAlign: 'center', marginBottom: '3rem' }} className="reveal">
             <div className="overline" style={{ justifyContent: 'center' }}>{t('eje.overline')}</div>
             <h2 style={{ fontFamily: 'var(--display)', fontSize: 'clamp(2rem,4vw,3.2rem)', color: 'var(--navy)', marginTop: '.75rem', letterSpacing: '.04em' }}>
@@ -343,7 +364,7 @@ export default function HomePage() {
           </div>
           <div className="eje-split-custom">
             <div className="reveal">
-              <div className="home-network-map-shell">
+              <div ref={networkMapRef} className="home-network-map-shell">
                 <img
                   key={lang}
                   src={'/images/mapa_azul.jpg'}
@@ -353,7 +374,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="reveal d2">
-              <div className="eje-map home-network-panel">
+              <div className="eje-map home-network-panel" style={networkPanelHeight ? { height: `${networkPanelHeight}px` } : undefined}>
                 <div className="eje-map-dots" />
                 <div className="home-network-panel-inner">
                   <div style={{ fontFamily: 'var(--cond)', fontSize: '.6rem', fontWeight: 700, letterSpacing: '.2em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '1rem', position: 'relative', zIndex: 2 }}>
