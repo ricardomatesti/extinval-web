@@ -2,6 +2,7 @@
 'use client'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
 import CMSLoader from '@/components/CMSLoader'
 import { useTranslation } from '@/contexts/LangContext'
 
@@ -49,13 +50,11 @@ export default function NosotrosPage() {
     <>
       <CMSLoader pageKey={PAGE} />
 
-      <div
+      <EditableBackground
+        id="nos-hero-bg"
         className="page-hero"
-        style={{
-          backgroundImage: "url('/images/Cabecera Quienes Somos.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        image="/images/Cabecera Quienes Somos.jpg"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
@@ -72,7 +71,7 @@ export default function NosotrosPage() {
             </p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       {/* TRAYECTORIA + LOGÍSTICA */}
       <section className="section"><div className="container">

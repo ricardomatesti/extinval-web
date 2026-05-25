@@ -2,6 +2,7 @@
 'use client'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang, useTranslation } from '@/contexts/LangContext'
 import { ARTICLES } from '@/lib/articles'
@@ -17,14 +18,11 @@ export default function ResourcesPage() {
       <CMSLoader pageKey={PAGE} />
 
       {/* PAGE HERO */}
-      <div
+      <EditableBackground
+        id="rg-hero-bg"
         className="page-hero"
-        style={{
-          backgroundImage: "url('/images/Cabecera Recursos Blog.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-        }}
+        image="/images/Cabecera Recursos Blog.jpg"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}
       >
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
@@ -41,7 +39,7 @@ export default function ResourcesPage() {
             </p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       {/* ═══ BLOG / RECURSOS ═══ */}
       <section className="section section-gray">

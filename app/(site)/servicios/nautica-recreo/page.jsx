@@ -2,6 +2,7 @@
 'use client'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang } from '@/contexts/LangContext'
 
@@ -15,13 +16,11 @@ export default function NauticaRecreoPage() {
       <CMSLoader pageKey={PAGE} />
 
       {/* PAGE HERO */}
-      <div
+      <EditableBackground
+        id="nr-hero-bg"
         className="page-hero"
-        style={{
-          backgroundImage: "url('/images/Cabecera_Home_Nautica2.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        image="/images/Cabecera_Home_Nautica2.jpg"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
@@ -48,7 +47,7 @@ export default function NauticaRecreoPage() {
             </p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       {/* INTRO */}
       <section className="section">

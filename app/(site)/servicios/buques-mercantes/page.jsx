@@ -2,6 +2,7 @@
 'use client'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang } from '@/contexts/LangContext'
 
@@ -14,13 +15,11 @@ export default function BuquesMercantesPage() {
     <>
       <CMSLoader pageKey={PAGE} />
 
-      <div
+      <EditableBackground
+        id="bm-hero-bg"
         className="page-hero"
-        style={{
-          backgroundImage: "url('/images/Cabecera_Home_Mercantes3.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        image="/images/Cabecera_Home_Mercantes3.jpg"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
@@ -42,7 +41,7 @@ export default function BuquesMercantesPage() {
             </p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       <section className="section"><div className="container">
         <div className="svc-detail-grid">

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useLang } from '@/contexts/LangContext'
+import EditableImage from './EditableImage'
 
 export default function Header() {
   const [scrolled,   setScrolled]   = useState(false)
@@ -76,7 +77,7 @@ export default function Header() {
               <Link href={lang === 'en' ? '/about'     : '/nosotros'}>{t('topbar.about')}</Link>
               <Link href={lang === 'en' ? '/authority' : '/autoridad'}>{t('topbar.certs')}</Link>
               <Link href={lang === 'en' ? '/contact'   : '/contacto'}>{t('topbar.contact')}</Link>
-              <Link href="/faq" className="tb-cta">{t('topbar.clientArea')}</Link>
+              <Link href="/panel-personal" className="tb-cta">{t('topbar.clientArea')}</Link>
             </div>
           </div>
         </div>
@@ -86,7 +87,9 @@ export default function Header() {
         <div className="container">
           <div className="header-inner">
             <Link href="/" className="logo-wrap">
-              <img
+              <EditableImage
+                id="global-logo"
+                scope="global"
                 src="/images/driveChanges/Logo_Extinval_FondoBlanco_largo.png"
                 alt="Extinval Group"
                 style={{ height: 62, width: 'auto', display: 'block' }}

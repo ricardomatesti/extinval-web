@@ -1,6 +1,6 @@
 // Copyright © 2026 Pelayo Garrido Martinez — devpelayogarrido@gmail.com
 // app/api/auth/route.js
-// POST /api/auth  { password: string }  → sets httpOnly JWT cookie
+// POST /api/auth  { email: string, password: string } → sets httpOnly JWT cookie
 // DELETE /api/auth                      → clears cookie (logout)
 
 import { NextResponse } from 'next/server'
@@ -9,16 +9,19 @@ import { cookies } from 'next/headers'
 
 export async function POST(request) {
   try {
-    const { password } = await request.json()
-    const expected = process.env.CMS_PASSWORD
-    if (!expected) {
+    const { email, password } = await request.json()
+    const expectedEmail = process.env.CMS_EMAIL
+    const expectedPassword = process.env.CMS_PASSWORD
+    if (!expectedEmail || !expectedPassword) {
       return NextResponse.json({ error: 'CMS not configured' }, { status: 500 })
     }
-    if (password !== expected) {
-      // Constant-time would be better; fine for this use-case
-      return NextResponse.json({ error: 'Contraseña incorrecta' }, { status: 401 })
+    if (
+      String(email || '').trim().toLowerCase() !== expectedEmail.trim().toLowerCase() ||
+      password !== expectedPassword
+    ) {
+      return NextResponse.json({ error: 'Email o contraseña incorrectos' }, { status: 401 })
     }
-    const token = await signEditorToken()
+    const token = await signEditorToken(expectedEmail)
     const res = NextResponse.json({ ok: true })
     res.cookies.set(COOKIE_NAME, token, COOKIE_OPTS)
     return res
@@ -39,8 +42,8 @@ export async function GET() {
   const token = cookieStore.get(COOKIE_NAME)?.value
   if (!token) return NextResponse.json({ authenticated: false })
   try {
-    await verifyEditorToken(token)
-    return NextResponse.json({ authenticated: true })
+    const payload = await verifyEditorToken(token)
+    return NextResponse.json({ authenticated: true, email: payload.email ?? null })
   } catch {
     return NextResponse.json({ authenticated: false })
   }

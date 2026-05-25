@@ -16,7 +16,7 @@ export default function Footer() {
             <Link href="/" className="logo-wrap" style={{ display:'inline-block', marginBottom:'1.25rem' }}>
               EXTINVAL
             </Link>
-            <EditableField id="ft-desc" tag="p" className="ft-brand-text">
+            <EditableField id="ft-desc" scope="global" tag="p" className="ft-brand-text">
               {t('footer.tagline')}
             </EditableField>
             <div className="ft-iso">
@@ -43,6 +43,7 @@ export default function Footer() {
               <Link href={lang === 'en' ? '/about#trayectoria'  : '/nosotros#trayectoria'}>{t('footer.trayectoria')}</Link>
               <Link href={lang === 'en' ? '/authority'          : '/autoridad'}>{t('footer.certs')}</Link>
               <Link href={lang === 'en' ? '/authority#partners' : '/autoridad#partners'}>{t('footer.partners')}</Link>
+              <Link href="/panel-personal">{t('footer.clientArea')}</Link>
               <Link href="/faq">{t('footer.faqs')}</Link>
             </div>
           </div>
@@ -52,14 +53,14 @@ export default function Footer() {
             <div className="ft-contact">
               <div className="ft-ci">
                 <span className="ft-ci-icon">📍</span>
-                <EditableField id="ft-address">
+                <EditableField id="ft-address" scope="global">
                   <span>Sede Central: Carrer Serra d&apos;Espadà, 28, Aldaia (Valencia)<br />Canarias · Almería · Panamá · EE.UU. · Canadá</span>
                 </EditableField>
               </div>
               
               <div className="ft-ci">
                 <span className="ft-ci-icon">✉</span>
-                <EditableField id="ft-email">service@extinval.com</EditableField>
+                <EditableField id="ft-email" scope="global">service@extinval.com</EditableField>
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableImage from '@/components/EditableImage'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang, useTranslation } from '@/contexts/LangContext'
 import { CONTACT_COUNTRY_ORDER, CONTACT_LOCATIONS, getContactCountryLabel } from '@/lib/contactLocations'
@@ -311,7 +312,7 @@ export default function HomePage() {
                 <div className="sc-num">{s.n}</div>
                 {/* 1.1 — Icono dentro del círculo original */}
                 <div className="sc-icon">
-                  {s.image.startsWith('/') ? <img src={s.image} alt={t(s.titleKey)} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : <span style={{ fontSize: '1.6rem', lineHeight: 1 }}>{s.image}</span>}
+                  {s.image.startsWith('/') ? <EditableImage id={`srv${s.cmsId}-image`} src={s.image} alt={t(s.titleKey)} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : <span style={{ fontSize: '1.6rem', lineHeight: 1 }}>{s.image}</span>}
                 </div>
                 <div className="sc-title"><EditableField id={`srv${s.cmsId}-title`}>{t(s.titleKey)}</EditableField></div>
                 <div className="sc-sub">{t(s.subKey)}</div>
@@ -365,7 +366,8 @@ export default function HomePage() {
           <div className="eje-split-custom">
             <div className="reveal">
               <div ref={networkMapRef} className="home-network-map-shell">
-                <img
+                <EditableImage
+                  id="home-network-map"
                   key={lang}
                   src={'/images/mapa_azul.jpg'}
                   alt={lang === 'en' ? 'Extinval Global Network — Security Axis' : 'Red Global Extinval — Eje de Seguridad'}
@@ -444,7 +446,8 @@ export default function HomePage() {
           </div>
           <div className="about-split-custom">
             <div className="reveal">
-              <img
+              <EditableImage
+                id="home-about-image"
                 src="/images/Cabecera_Home_Mercantes5.jpg"
                 alt="Extinval Group — Trayectoria y Misión"
                 style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }}

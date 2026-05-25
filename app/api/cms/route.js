@@ -4,8 +4,8 @@
 // POST /api/cms            → upserts content changes (requires editor JWT)
 
 import { NextResponse } from 'next/server'
-import { getSupabaseAdmin } from '@/lib/supabase'
 import { verifyEditorToken, COOKIE_NAME } from '@/lib/auth'
+import { getCMSPage, saveCMSPage } from '@/lib/cmsStore'
 import { cookies } from 'next/headers'
 
 /** Public: read all content for a page */
@@ -14,22 +14,8 @@ export async function GET(request) {
   const page = searchParams.get('page')
   if (!page) return NextResponse.json({ error: 'Missing page param' }, { status: 400 })
 
-  // Supabase not configured — pages use hardcoded EditableField defaults
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
-    return NextResponse.json({})
-  }
-
   try {
-    const db = getSupabaseAdmin()
-    const { data, error } = await db
-      .from('cms_content')
-      .select('content_key, content_html')
-      .eq('page_key', page)
-
-    if (error) throw error
-    const map = {}
-    for (const row of data ?? []) map[row.content_key] = row.content_html
-    return NextResponse.json(map)
+    return NextResponse.json(await getCMSPage(page))
   } catch (err) {
     console.error('[CMS GET]', err)
     return NextResponse.json({})
@@ -57,20 +43,8 @@ export async function POST(request) {
 
   // 3. Upsert to Supabase
   try {
-    const db = getSupabaseAdmin()
-    const rows = Object.entries(changes).map(([content_key, content_html]) => ({
-      page_key: page,
-      content_key,
-      content_html: String(content_html),
-      updated_at: new Date().toISOString(),
-    }))
-
-    const { error } = await db
-      .from('cms_content')
-      .upsert(rows, { onConflict: 'page_key,content_key' })
-
-    if (error) throw error
-    return NextResponse.json({ ok: true, saved: rows.length })
+    const saved = await saveCMSPage(page, changes)
+    return NextResponse.json({ ok: true, saved })
   } catch (err) {
     console.error('[CMS POST]', err)
     return NextResponse.json({ error: 'DB write failed' }, { status: 500 })

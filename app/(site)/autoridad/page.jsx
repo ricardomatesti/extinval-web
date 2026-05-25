@@ -2,6 +2,8 @@
 'use client'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
+import EditableImage from '@/components/EditableImage'
 import CMSLoader from '@/components/CMSLoader'
 import { useTranslation } from '@/contexts/LangContext'
 
@@ -14,14 +16,11 @@ export default function AutoridadPage() {
     <>
       <CMSLoader pageKey={PAGE} />
 
-      <div
+      <EditableBackground
+        id="aut-hero-bg"
         className="page-hero"
-        style={{
-          backgroundImage: "url('/images/Cabecera Autoridad.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          position: 'relative',
-        }}
+        image="/images/Cabecera Autoridad.jpg"
+        style={{ backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}
       >
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
@@ -38,7 +37,7 @@ export default function AutoridadPage() {
             </p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       <section className="section"><div className="container">
         <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto 3.5rem' }}>
@@ -115,7 +114,7 @@ export default function AutoridadPage() {
               { src: '/images/classnk-00004.webp',         label: 'REGISTRO ITALIANO NAVALE' },
             ].map(({ src, label }) => (
               <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: 160 }}>
-                <img src={src} alt={label} style={{ height: 90, width: '100%', objectFit: 'contain', filter: 'grayscale(20%)' }} />
+                <EditableImage id={`aut-logo-${label}`} src={src} alt={label} style={{ height: 90, width: '100%', objectFit: 'contain', filter: 'grayscale(20%)' }} />
                 <div style={{ fontSize: '.7rem', fontWeight: 700, letterSpacing: '.08em', color: 'var(--navy)', textAlign: 'center', lineHeight: 1.3 }}>{label}</div>
               </div>
             ))}

@@ -18,6 +18,7 @@ import { useCMS } from './CMSProvider'
  */
 export default function EditableField({
   id,
+  scope = 'page',
   tag: Tag = 'span',
   className,
   style,
@@ -44,15 +45,13 @@ export default function EditableField({
     if (active) {
       el.contentEditable = 'true'
       el.spellcheck = true
-      document.body.classList.add('cms-active')
     } else {
       el.removeAttribute('contenteditable')
-      document.body.classList.remove('cms-active')
     }
   }, [active])
 
   const handleInput = (e) => {
-    markChange(id, e.currentTarget.innerHTML)
+    markChange(id, e.currentTarget.innerHTML, scope)
   }
 
   // Prevent link navigation in edit mode

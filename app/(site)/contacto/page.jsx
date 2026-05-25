@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import EditableField from '@/components/EditableField'
+import EditableBackground from '@/components/EditableBackground'
 import CMSLoader from '@/components/CMSLoader'
 import { useLang, useTranslation } from '@/contexts/LangContext'
 import { CONTACT_LOCATIONS } from '@/lib/contactLocations'
@@ -49,7 +50,7 @@ export default function ContactoPage() {
     <>
       <CMSLoader pageKey={PAGE} />
 
-      <div className="page-hero" style={{ backgroundImage: "url('/images/contacto_background.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+      <EditableBackground id="ct-hero-bg" className="page-hero" image="/images/contacto_background.jpg" style={{ backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.5)' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="ph-inner">
@@ -61,7 +62,7 @@ export default function ContactoPage() {
             <p className="page-sub"><EditableField id="ct-sub">{t('ct.sub')}</EditableField></p>
           </div>
         </div>
-      </div>
+      </EditableBackground>
 
       <section className="section">
         <div className="container">
