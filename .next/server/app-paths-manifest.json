@@ -1,4 +1,5 @@
 {
+  "/(admin)/panel-personal/page": "app/(admin)/panel-personal/page.js",
   "/(landings)/landing-charters/page": "app/(landings)/landing-charters/page.js",
   "/(landings)/landing-industrial/page": "app/(landings)/landing-industrial/page.js",
   "/(landings)/landing-mercantes/page": "app/(landings)/landing-mercantes/page.js",
@@ -19,5 +20,6 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/api/auth/route": "app/api/auth/route.js",
   "/api/cms/route": "app/api/cms/route.js",
+  "/api/cms/status/route": "app/api/cms/status/route.js",
   "/api/contact/route": "app/api/contact/route.js"
 }

@@ -80,6 +80,7 @@ export default function HomePage() {
   // ── 4 SLIDES — uno por división ──────────────────────────────────────────
   const slides = [
     {
+      cmsId:    'slide1',
       division: t('slide1.division'),
       divHref:  '/servicios/oil-gas',
       claim:    [t('slide1.claim1'), t('slide1.claim2')],
@@ -88,6 +89,7 @@ export default function HomePage() {
       image:    '/images/Cabecera_Oil & Gas.jpg',
     },
     {
+      cmsId:    'slide2',
       division: t('slide2.division'),
       divHref:  '/servicios/buques-mercantes',
       claim:    [t('slide2.claim1'), t('slide2.claim2'), t('slide2.claim3')],
@@ -96,6 +98,7 @@ export default function HomePage() {
       image:    '/images/Cabecera_Home_Mercantes2.jpg',
     },
     {
+      cmsId:    'slide3',
       division: t('slide3.division'),
       divHref:  '/servicios/nautica-recreo',
       claim:    [t('slide3.claim1'), t('slide3.claim2'), t('slide3.claim3')],
@@ -105,6 +108,7 @@ export default function HomePage() {
       image:    '/images/Cabecera_Home_Nautica.jpg',
     },
     {
+      cmsId:    'slide4',
       division: t('slide4.division'),
       divHref:  '/servicios/industrial-comercial',
       claim:    [t('slide4.claim1'), t('slide4.claim2'), t('slide4.claim3')],
@@ -256,25 +260,35 @@ export default function HomePage() {
               <div className="hero-content" style={{ position: 'relative', zIndex: 2 }}>
                 <div className="slide-division-tag">
                   <span className="slide-division-line" />
-                  <span className="slide-division-name">{sl.division}</span>
+                  <span className="slide-division-name">
+                    <EditableField id={`${sl.cmsId}-division`}>{sl.division}</EditableField>
+                  </span>
                   <span className="slide-division-line" />
                 </div>
 
                 <h1 className="hero-title">
                   {sl.claim.map((line, li) => (
                     <span key={li}>
-                      {li === sl.emIdx ? <em>{line}</em> : line}
+                      {li === sl.emIdx ? (
+                        <em>
+                          <EditableField id={`${sl.cmsId}-claim-${li + 1}`}>{line}</EditableField>
+                        </em>
+                      ) : (
+                        <EditableField id={`${sl.cmsId}-claim-${li + 1}`}>{line}</EditableField>
+                      )}
                       {li < sl.claim.length - 1 && <br />}
                     </span>
                   ))}
                 </h1>
 
                 {sl.subtitle && (
-                  <div className="slide-subtitle">{sl.subtitle}</div>
+                  <div className="slide-subtitle">
+                    <EditableField id={`${sl.cmsId}-subtitle`}>{sl.subtitle}</EditableField>
+                  </div>
                 )}
 
                 <p className="hero-lead" style={{ marginTop: sl.subtitle ? '.5rem' : undefined }}>
-                  {sl.lead}
+                  <EditableField id={`${sl.cmsId}-lead`}>{sl.lead}</EditableField>
                 </p>
               </div>
             </div>

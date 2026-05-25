@@ -24,11 +24,17 @@ export default function PanelPersonalPage() {
   const [error, setError] = useState('')
   const [selectedPageId, setSelectedPageId] = useState(PAGES[0].id)
   const [submitting, setSubmitting] = useState(false)
+  const [previewNonce, setPreviewNonce] = useState(1)
 
   const selectedPage = useMemo(
     () => PAGES.find((page) => page.id === selectedPageId) ?? PAGES[0],
     [selectedPageId]
   )
+
+  const previewSrc = useMemo(() => {
+    const sep = selectedPage.path.includes('?') ? '&' : '?'
+    return `${selectedPage.path}${sep}cms=1&preview=${previewNonce}`
+  }, [selectedPage.path, previewNonce])
 
   useEffect(() => {
     fetch('/api/cms/status')
@@ -64,6 +70,7 @@ export default function PanelPersonalPage() {
       setAuthenticated(true)
       setSessionEmail(email)
       setPassword('')
+      setPreviewNonce((n) => n + 1)
     } catch {
       setError('Error de conexión')
     } finally {
@@ -216,7 +223,8 @@ export default function PanelPersonalPage() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
-                  <a className="panel-btn panel-btn-light" href={selectedPage.path} target="_blank" rel="noreferrer">Abrir en pestaña</a>
+                  <button className="panel-btn panel-btn-light" type="button" onClick={() => setPreviewNonce((n) => n + 1)}>Recargar vista previa</button>
+                  <a className="panel-btn panel-btn-light" href={previewSrc} target="_blank" rel="noreferrer">Abrir en pestaña</a>
                   <button className="panel-btn panel-btn-primary" type="button" onClick={handleLogout}>Cerrar sesión</button>
                 </div>
               </div>
@@ -240,7 +248,7 @@ export default function PanelPersonalPage() {
                     </button>
                   ))}
                   <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #d8deea', fontSize: '.86rem', color: '#5a6e8a', lineHeight: 1.6 }}>
-                    En la vista previa, haga clic sobre textos o imágenes resaltadas. Los cambios se guardan desde la barra azul fija que aparece dentro de la propia página.
+                    En la vista previa, haga clic sobre textos o imágenes resaltadas. La barra azul aparece dentro del iframe, pegada abajo del preview. Si no sale, pulse `Recargar vista previa`.
                   </div>
                 </aside>
 
@@ -248,13 +256,13 @@ export default function PanelPersonalPage() {
                   <div style={{ padding: '.25rem .25rem 1rem', display: 'flex', justifyContent: 'space-between', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     <div>
                       <div style={{ fontSize: '1.15rem', fontWeight: 700 }}>{selectedPage.title}</div>
-                      <div style={{ color: '#5a6e8a', marginTop: '.2rem' }}>{selectedPage.path}</div>
+                      <div style={{ color: '#5a6e8a', marginTop: '.2rem' }}>{previewSrc}</div>
                     </div>
                   </div>
                   <iframe
-                    key={selectedPage.path}
+                    key={previewSrc}
                     title={`Vista previa editable de ${selectedPage.title}`}
-                    src={selectedPage.path}
+                    src={previewSrc}
                     className="panel-preview-frame"
                   />
                 </section>

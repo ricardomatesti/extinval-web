@@ -31,6 +31,22 @@ Abre el SQL Editor de Supabase y ejecuta el contenido de [supabase/cms_content.s
    - `Guardando en Supabase` si está bien conectado
    - `Modo local (JSON)` si aún falta configurar Supabase
 
+## 3.1. Poblar Supabase la primera vez
+
+Cuando Supabase ya esté conectado, sube el contenido inicial editable con:
+
+```bash
+npm run cms:seed:push
+```
+
+Si antes quieres revisar el seed generado:
+
+```bash
+npm run cms:seed:json
+```
+
+Eso escribe un snapshot en `data/cms-seed.json`.
+
 ## 4. Cómo funciona el guardado
 
 - Con Supabase configurado:

@@ -35,9 +35,12 @@ export default function CMSProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    const shouldAutoOpen = new URLSearchParams(window.location.search).get('cms') === '1'
+    if (shouldAutoOpen) setActive(true)
     fetch('/api/auth')
       .then((r) => r.json())
       .then((d) => {
+        if (!d.authenticated && !shouldAutoOpen) setActive(false)
         if (d.authenticated) setActive(true)
       })
       .catch(() => {})
@@ -210,12 +213,12 @@ export default function CMSProvider({ children }) {
         [data-cms-field] { transition: outline-color .2s; }
         [data-cms-image] { transition: outline-color .2s, filter .2s; }
         [data-cms-bg] { transition: outline-color .2s, filter .2s; }
-        body.cms-active [data-cms-field] { outline: 2px dashed transparent; outline-offset: 2px; cursor: text; }
+        body.cms-active [data-cms-field] { outline: 2px dashed rgba(59,130,246,.2); outline-offset: 2px; cursor: text; }
         body.cms-active [data-cms-field]:hover { outline-color: rgba(59,130,246,.5); }
         body.cms-active [data-cms-field]:focus { outline: 2px solid #3B82F6; outline-offset: 2px; }
-        body.cms-active [data-cms-image] { outline: 2px dashed transparent; outline-offset: 4px; cursor: pointer; }
+        body.cms-active [data-cms-image] { outline: 2px dashed rgba(59,130,246,.2); outline-offset: 4px; cursor: pointer; }
         body.cms-active [data-cms-image]:hover { outline-color: rgba(59,130,246,.5); filter: brightness(1.03); }
-        body.cms-active [data-cms-bg] { outline: 2px dashed transparent; outline-offset: -6px; cursor: pointer; }
+        body.cms-active [data-cms-bg] { outline: 2px dashed rgba(59,130,246,.2); outline-offset: -6px; cursor: pointer; }
         body.cms-active [data-cms-bg]:hover { outline-color: rgba(59,130,246,.5); filter: brightness(1.01); }
       `}</style>
     </CMSCtx.Provider>
