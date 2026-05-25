@@ -337,7 +337,7 @@ export default function HomePage() {
               {/* 1.2 — Mapa según idioma, sin recorte */}
               <img
                 key={lang}
-                src={lang === 'en' ? '/images/Mapa_Ubicaciones_EN.jpg' : '/images/Mapa_Ubicaciones_ES.jpg'}
+                src={'/images/mapa_azul.jpg'}
                 alt={lang === 'en' ? 'Extinval Global Network — Security Axis' : 'Red Global Extinval — Eje de Seguridad'}
                 className="eje-map-img"
               />

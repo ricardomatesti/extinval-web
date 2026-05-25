@@ -115,8 +115,8 @@ export default function ContactoPage() {
     <>
       <CMSLoader pageKey={PAGE} />
 
-      <div className="page-hero" style={{ backgroundImage: "url('/images/contacto-background.png')", backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.6)' }} />
+      <div className="page-hero" style={{ backgroundImage: "url('/images/contacto_background.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.5)' }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="ph-inner">
             <div className="breadcrumb">

@@ -22,7 +22,7 @@ export default function OilGasPage() {
           backgroundPosition: 'center',
         }}
       >
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.6)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(11,30,58,0.4)' }} />
         <div className="container">
           <div className="ph-inner">
             <div className="breadcrumb">
