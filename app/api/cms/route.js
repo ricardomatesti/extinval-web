@@ -25,7 +25,7 @@ export async function GET(request) {
 /** Protected: write content changes */
 export async function POST(request) {
   // 1. Verify auth cookie
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   try {

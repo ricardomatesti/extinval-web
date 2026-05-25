@@ -38,7 +38,7 @@ export async function DELETE() {
 
 export async function GET() {
   // Check if current user has a valid editor token
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
   if (!token) return NextResponse.json({ authenticated: false })
   try {
